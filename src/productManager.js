@@ -21,13 +21,14 @@ class ProductManager {
     await fs.promises.writeFile(itemListPath, listJSON);
   }
 
-  async getProducts() {
-    // let items = this.products
-
+  async getProducts(limit) {
     let readItems = await fs.promises.readFile(this.path, this.products);
     let itemsParse = JSON.parse(readItems);
     // return itemsParse;
-    console.log(itemsParse);
+    return limit === 0 || limit > itemsParse.length
+      ? itemsParse
+      : itemsParse.slice(0, limit);
+    // console.log(itemsParse);
   }
 
   getProductsById(itemID) {
@@ -89,22 +90,22 @@ manager.addProduts({
   code: "abc123",
   stock: 2,
 });
-// manager.addProduts({
-//   title: "producto prueba 2",
-//   description: "Este es un producto prueba",
-//   price: 200,
-//   thumbnail: "Sin imagen",
-//   code: "abcddd123",
-//   stock: 3,
-// });
-// manager.addProduts({
-//   title: "producto prusdfeba 3",
-//   description: "Este es un producto prueba",
-//   price: 200,
-//   thumbnail: "Sin imagen",
-//   code: "abcddddsf123",
-//   stock: 3,
-// });
+manager.addProduts({
+  title: "producto prueba 2",
+  description: "Este es un producto prueba",
+  price: 200,
+  thumbnail: "Sin imagen",
+  code: "abcddd123",
+  stock: 3,
+});
+manager.addProduts({
+  title: "producto prusdfeba 3",
+  description: "Este es un producto prueba",
+  price: 200,
+  thumbnail: "Sin imagen",
+  code: "abcddddsf123",
+  stock: 3,
+});
 manager.addProduts({
   title: "producto prusdfeba 4",
   description: "Este es un producto prueba 4",
@@ -116,6 +117,6 @@ manager.addProduts({
 
 // const claseDePrueba = new ProductManager("./files/itemList.json");
 // claseDePrueba.getProducts();
-// console.log(claseDePrueba.getProducts());
+// console.log(await claseDePrueba.getProducts());
 
 export default ProductManager;
