@@ -6,7 +6,7 @@ class ProductManager {
     this.path = path;
   }
 
-  addProduts(item) {
+  async addProduts(item) {
     let itemsList = this.products;
     let itemListPath = this.path;
     let generateID = itemsList.reduce((sum, elem) => 1 + elem.id, 1);
@@ -18,20 +18,18 @@ class ProductManager {
 
     let listJSON = JSON.stringify(itemsList);
 
-    const itemsListWriteFile = async () => {
-      await fs.promises.writeFile(itemListPath, listJSON);
-    };
-    itemsListWriteFile();
+    await fs.promises.writeFile(itemListPath, listJSON);
   }
 
-  getProducts() {
-    const getList = async () => {
-      let readItems = await fs.promises.readFile(this.path, "utf-8");
-      // console.log(JSON.parse(readItems));
-      return JSON.parse(readItems)
-    };
-    getList();
+  async getProducts() {
+    // let items = this.products
+
+    let readItems = await fs.promises.readFile(this.path, this.products);
+    let itemsParse = JSON.parse(readItems);
+    // return itemsParse;
+    console.log(itemsParse);
   }
+
   getProductsById(itemID) {
     const getById = async () => {
       let readItems = await fs.promises.readFile(this.path, "utf-8");
@@ -116,6 +114,8 @@ manager.addProduts({
   stock: 4,
 });
 
-manager.getProducts()
+// const claseDePrueba = new ProductManager("./files/itemList.json");
+// claseDePrueba.getProducts();
+// console.log(claseDePrueba.getProducts());
 
 export default ProductManager;
